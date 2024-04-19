@@ -1,0 +1,111 @@
+.input-red {
+    background-color: white; /* 将输入框的背景颜色设置为白色 */
+    color: #c84732; /* 将字体颜色设置为红色 */
+    opacity: 1;
+    font-size: 20px;
+  }
+  
+  .input-white {
+    background-color: #c84732; /* 将输入框的背景颜色设置为红色 */
+    color: white; /* 将字体颜色设置为白色 */
+    font-size: 20px;
+  }
+  
+  .Input_box {
+    /* position: fixed; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* bottom: 10px; */
+    height: 60px;
+    width: 90%;
+    background-color: #c84732;
+    margin: 0 auto;
+    border-radius: 8px;
+    align-content: center;
+  }
+  
+  .Input_button {
+    width: 80%;
+    height: 50px;
+    line-height: 100px;
+    /* margin-left: 10%; 调整输入框的左边距以使其居中 */
+    border-radius: 8px;
+    text-align: center; /* 设置文字居中 */
+    border: #c84732;
+    z-index: 222;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* 创建一个波浪形状的基础样式 */
+  .waveform {
+    position: relative;
+    height: 80px;
+    overflow: hidden; /* 隐藏超出波形容器的部分 */
+  }
+  
+  /* 创建波浪动画的条形样式 */
+  .bar {
+    height: 33px;
+    background-color: #4caf50;
+    float: left; /* 使每个条形浮动在左侧 */
+    margin-right: 15px; /* 设置条形之间的间距 */
+    animation: waveform-animation 1s infinite alternate;
+  }
+  
+  /* 最后一个 bar 不添加右边距 */
+  .bar:last-child {
+    margin-right: 0;
+  }
+  
+  @keyframes waveform-animation {
+    0% {
+      transform: translateY(0); /* 将条形向下移动0个单位 */
+    }
+    50% {
+      transform: translateY(10px); /* 将条形向下移动10个单位，即顶部和底部同时下降 */
+    }
+    100% {
+      transform: translateY(0); /* 将条形向下移动回原来的位置 */
+    }
+  }
+  .speech-bubble {
+    position: absolute;
+    top: -150px; /* 距离 Input_box 顶部的距离 */
+    left: 50%; /* 居中 */
+    transform: translateX(-50%); /* 居中 */
+    background-color: white; /* 气泡框背景色 */
+    color: #4caf50; /* 文字颜色 */
+    border-radius: 10px; /* 边框圆角 */
+    /* padding: 10px 20px;*/ /* 内边距 */
+    width: 60%;
+    z-index: 3;
+  }
+  
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    top: 100%; /* 气泡框顶部的位置 */
+    left: 50%; /* 居中 */
+    border: 10px solid transparent;
+    border-top-color: white; /* 气泡框背景色 */
+    transform: translateX(-50%);
+  }
+  /* 遮罩层 */
+  .mask {
+    position: fixed; /* 使遮罩层固定在窗口 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+    z-index: 2; /* 确保遮罩层在 Input_box 之上 */
+  }
+  .voiceWave {
+    margin-bottom: 80px;
+  }
