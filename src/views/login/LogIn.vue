@@ -58,7 +58,9 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-// import {message} from 'ant-design-vue';
+import { message } from 'ant-design-vue'
+import { JWHLoginRequest } from '../../services/login/login'
+import axios from 'axios'
 
 const router = useRouter()
 const spinning = ref<boolean>(false)
@@ -76,24 +78,50 @@ const formState = reactive<FormState>({
 // 登录表单验证
 const getRules = (fieldName: string) => [{ required: true, message: `${fieldName}不能为空!` }]
 
+
+// 登录接口(另一种,备用)
+/* const logIn = () => { // 添加了箭头函数的参数声明
+  const formData = new FormData();
+  // 向 FormData 对象添加表单数据
+  formData.append('account', formState.useraccount);
+  formData.append('password', formState.password);
+
+  axios.post('/login', formData)
+    .then(response => {
+      console.log(response.data); // 打印后端返回数据
+      if (response.data.code === 200) {
+        alert(response.data.msg);
+        router.push('/MainPage');
+      } else if (response.data.code === 100) {
+        alert(response.data.msg);
+      }
+    })
+    .catch(error => {
+      console.error('登录请求出错:', error);
+      // 处理请求错误
+      // 可以在这里处理请求失败的情况，例如显示错误信息给用户
+    });
+};  */
 // 登录接口
 async function logIn() {
   // console.log(formState.useraccount)
   // console.log(formState.password)
-  // spinning.value = true;
-  // const loginResult = await JWHLoginRequest(formState.useraccount, formState.password);
-  // // console.log(loginResult)
-  // if (loginResult.code == 200) {
-  //   // console.log(loginResult.data.access_Token)
-  //   localStorage.setItem('access_Token', loginResult.data.access_Token);
-  router.push('/MainPage')
-  //   spinning.value = false;
-  //   message.success(`${loginResult.msg}`);
-  // } else {
-  //   spinning.value = false;
-  //   message.warning(`${loginResult.msg}`);
-  // }
-}
+  spinning.value = true
+  const loginResult = await JWHLoginRequest(formState.useraccount, formState.password)
+  // console.log(loginResult)
+  if (loginResult.code == 200) {
+    console.log(loginResult.data.token)
+    localStorage.setItem('AcountID', loginResult.data.id)
+    localStorage.setItem('token', loginResult.data.token)
+    router.push('/MainPage')
+    spinning.value = false
+    message.success("登录成功")
+  } else {
+    spinning.value = false
+    message.warning("密码有误")
+  }
+} 
+
 </script>
 
 <style scoped>
