@@ -12,7 +12,7 @@
               </span>
             </div>
             <div class="custom-tooltip-button">
-              <VoiceButton :content="tooltip.content" />
+              <VoiceButton :content="tooltip.content"/>
             </div>
           </div>
         </div>
@@ -23,6 +23,7 @@
   <script setup lang="ts">
   import {ref, onMounted, watch, defineComponent, onUpdated} from 'vue';
   import {Avatar as AAvatar, Popconfirm as APopconfirm} from 'ant-design-vue';
+  import { CaretRightOutlined } from '@ant-design/icons'
   import VoiceButton from '../content-page/VoiceButton.vue';
   import Time from '../content-page/Time.vue'
   

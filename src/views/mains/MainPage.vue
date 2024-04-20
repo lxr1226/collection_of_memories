@@ -13,12 +13,20 @@
       <a-button type="primary" danger shape="round" class="login-out">退出登录</a-button>
     </a-layout-sider>
     <a-layout>
-      <a-layout-content :style="contentStyle">
+      <!-- <a-layout-content :style="contentStyle">
         <div style="padding:0 50px">
           <AI :newContent="contents" v-if="isAIVisible" style="margin: 50px;"></AI>
         </div>
         
         <Content ref="contentRef" :receivedData="receivedData" :isAI="isAI"></Content>
+      </a-layout-content> -->
+      <a-layout-content class="content-wrapper">
+        <div style="height: 90vh; overflow-y: auto;">
+          <div style="padding: 0 50px">
+            <AI :newContent="contents" v-if="isAIVisible" style="margin: 50px;"></AI>
+          </div>
+          <Content ref="contentRef" :receivedData="receivedData" :isAI="isAI"></Content>
+        </div>
       </a-layout-content>
       <a-layout-footer :style="footerStyle">
         <VoiceInput
@@ -59,13 +67,13 @@ import Content from '../../components/mains/main-page/content/Content.vue'
 // import VoiceInput from '../../components/footer/VoiceInput.vue';
 const isAIVisible=ref(false)
 const contents ='请说出您的写作意图'
-const contentStyle: CSSProperties = {
-  textAlign: 'left',
-  minHeight: 120,
-  lineHeight: '50px',
-  color: '#fff',
-  backgroundColor: '#eee'
-}
+// const contentStyle: CSSProperties = {
+//   textAlign: 'left',
+//   minHeight: 120,
+//   lineHeight: '50px',
+//   color: '#fff',
+//   backgroundColor: '#eee'
+// }
 
 const siderStyle: CSSProperties = {
   position: 'relative',
@@ -117,7 +125,9 @@ const handleClick=()=>{
 
 <style scoped>
 .main {
-  min-height: 100%;
+  /* min-height:100%;在电脑屏幕稍大的地方显示有滑动条 */
+  max-height: 100%;
+  
 }
 
 .login-out {
@@ -126,5 +136,9 @@ const handleClick=()=>{
   left: 5px;
   right: 5px;
   margin: 0 auto;
+}
+
+.content-wrapper {
+  height: 100%; /* 使内容区域撑满父元素 */
 }
 </style>

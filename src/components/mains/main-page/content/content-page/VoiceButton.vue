@@ -1,21 +1,23 @@
 <template>
   <div>
-    <a-button
+    <Button
       v-for="(button, index) in buttons"
       :key="index"
-      type="default"
-      :style="{ backgroundColor: '#c84732', borderRadius: '8px', color: '#fff' }"
+      type="primary"
+      :style="{ backgroundColor:button.active ?button.styles.bgplay:button.styles.bgpause , borderRadius: '8px', color: '#fff' }"
       @click="toggleButtonStyle(button)"
-      >播放
-      <CaretRightOutlined />
-    </a-button>
+      :icon="button.active ? button.icons.pause : button.icons.play"
+      >
+    </Button>
   </div>
+  
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { Button as AButton } from 'ant-design-vue'
-import { CaretRightOutlined } from '@ant-design/icons'
+import { Button } from 'ant-design-vue'
+import { h } from 'vue';
+import { CaretRightOutlined ,PauseOutlined} from '@ant-design/icons-vue'
 import { defineProps } from 'vue'
 const textToSynthesize = ref('')
 const player = ref<HTMLAudioElement | null>(null)
@@ -54,23 +56,24 @@ async function Play() {
 const buttons = ref([
   {
     id: 1,
-    style: {
-      backgroundColor: '#c84732',
-      iconName: 'play' // 默认
+    styles: {
+      bgplay: '#56684f',
+      bgpause: '#c84732',
+    },
+    icons: {
+      play: h(CaretRightOutlined), // 播放图标
+      pause: h(PauseOutlined) // 暂停图标
     },
     active: false // 初始状态为非激活状态
   }
-  // 可以添加更多的按钮数据
 ])
 
 // 点击按钮时切换样式的函数
 const toggleButtonStyle = (button: { active: boolean; id: number }) => {
   if (button.active) {
-    //handleStop();
-    pauseAudio()
+    pauseAudio()   
   } else {
     // 如果按钮是非激活状态，则切换到新样式
-    //handleSpeak();
     synthesizeAndPlay(button.id, button.active)
   }
   // 切换按钮状态
@@ -79,8 +82,7 @@ const toggleButtonStyle = (button: { active: boolean; id: number }) => {
 // 定义全局变量 audio
 let audio: any
 async function synthesizeAndPlay(buttonId: number, active: boolean) {
-  const buttonsValue = buttons.value // 获取 buttons 的原始值
-  const button = buttonsValue.find((b) => b.id === buttonId) // 根据 id 获取对应的按钮数据
+  const button = buttonId
   if (!props.content) {
     alert('Please enter some text to synthesize.')
     return

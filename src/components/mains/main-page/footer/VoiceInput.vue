@@ -83,7 +83,8 @@ function recStop() {
 // 设置请求头
 const config = {
   headers: {
-    'Content-Type': 'application/octet-stream'
+    'Content-Type': 'application/octet-stream',
+    'Authorization':'bearer'
   }
 }
 // 封装发送Base64编码的录音数据到后端的方法
@@ -91,7 +92,7 @@ const sendDataToBackend = (wavBlob:Blob) => {
   axios.post('http://47.108.144.113:8906/transcribeAudio', wavBlob, config)
     .then((response) => {
       if (response.data) {
-        const responseData = response.data.replace(/^\[|]$/g, '');
+        const responseData = response.data.data.body.replace(/^\[|]$/g, '');
         sendDataToParent(responseData,false);
         sendMessage(responseData);
         // const formData = new FormData();
@@ -107,6 +108,7 @@ const sendDataToBackend = (wavBlob:Blob) => {
     });
 };
 let dataBuffer: string[] = [];
+
  const sendMessage = (text:string) => {
   if (text) {
     // 发送消息给后端
