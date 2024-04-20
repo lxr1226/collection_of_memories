@@ -13,6 +13,9 @@ import lsjRequest from '..'
 export function JWHLoginRequest(account: string, password: string) {
   return lsjRequest.post({
     url: '/login',
+    headers:{
+      'Content-Type':'multipart/form-data'
+    },
     data: { account, password }
   })
 }

@@ -79,17 +79,16 @@ function recStop() {
     rec.value = null;
   });
 }
-
+const token = localStorage.getItem('token');
 // 设置请求头
 const config = {
   headers: {
-    'Content-Type': 'application/octet-stream',
-    'Authorization':'bearer'
+    'token':token
   }
 }
 // 封装发送Base64编码的录音数据到后端的方法
 const sendDataToBackend = (wavBlob:Blob) => {
-  axios.post('http://47.108.144.113:8906/transcribeAudio', wavBlob, config)
+  axios.post('http://47.108.144.113:8906/transcribeAudios', wavBlob, config)
     .then((response) => {
       console.log(response.data.data.body)
       if (response.data.data.body) {
