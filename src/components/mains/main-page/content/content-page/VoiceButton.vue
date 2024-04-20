@@ -70,17 +70,23 @@ const buttons = ref([
 
 // 点击按钮时切换样式的函数
 const toggleButtonStyle = (button: { active: boolean; id: number }) => {
-  if (button.active) {
-    pauseAudio()   
-  } else {
-    // 如果按钮是非激活状态，则切换到新样式
-    synthesizeAndPlay(button.id, button.active)
+  try {
+    // 如果按钮是激活状态，则暂停音频并切换到初始样式
+    if (button.active) {
+      pauseAudio()
+    } else {
+      // 如果按钮是非激活状态，则播放音频并切换到新样式
+      synthesizeAndPlay(button.id, button.active)
+    }
+    // 切换按钮状态
+    button.active = !button.active
+  } catch (error) {
+    console.error('Error toggling button style:', error)
   }
-  // 切换按钮状态
-  button.active = !button.active
 }
 // 定义全局变量 audio
 let audio: any
+
 async function synthesizeAndPlay(buttonId: number, active: boolean) {
   const button = buttonId
   if (!props.content) {
@@ -89,10 +95,13 @@ async function synthesizeAndPlay(buttonId: number, active: boolean) {
   }
 
   try {
-    // console.log(props.content)
+    console.log(props.content)
     const apiUrl = `http://47.108.144.113:8906/synthesize?text=${encodeURIComponent(props.content)}`
-
-    const response = await fetch(apiUrl)
+    const response = await fetch(apiUrl, {
+      headers: {
+        'Authorization': 'bearer' // 将请求头内容传递给后端
+      }
+    })
     /* console.log(response.ok) */
     if (!response.ok) {
       throw new Error(`Failed to fetch synthesized audio. Status: ${response.status}`)

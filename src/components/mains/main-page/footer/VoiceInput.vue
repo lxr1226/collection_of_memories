@@ -91,7 +91,8 @@ const config = {
 const sendDataToBackend = (wavBlob:Blob) => {
   axios.post('http://47.108.144.113:8906/transcribeAudio', wavBlob, config)
     .then((response) => {
-      if (response.data) {
+      console.log(response.data.data.body)
+      if (response.data.data.body) {
         const responseData = response.data.data.body.replace(/^\[|]$/g, '');
         sendDataToParent(responseData,false);
         sendMessage(responseData);

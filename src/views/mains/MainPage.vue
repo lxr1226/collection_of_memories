@@ -61,19 +61,19 @@
 import type { CSSProperties } from 'vue'
 import VoiceInput from '@/components/mains/main-page/footer/VoiceInput.vue'
 import AI from '@/components/mains/main-page/content/content-page/Ai.vue'
-
+import PersonalInformation from '@/components/mains/main-page/PersonalInformation.vue'
 import { ref } from 'vue'
 import Content from '../../components/mains/main-page/content/Content.vue'
 // import VoiceInput from '../../components/footer/VoiceInput.vue';
 const isAIVisible=ref(false)
 const contents ='请说出您的写作意图'
-// const contentStyle: CSSProperties = {
-//   textAlign: 'left',
-//   minHeight: 120,
-//   lineHeight: '50px',
-//   color: '#fff',
-//   backgroundColor: '#eee'
-// }
+const contentStyle: CSSProperties = {
+  textAlign: 'left',
+  minHeight: 120,
+  lineHeight: '50px',
+  color: '#fff',
+  backgroundColor: '#eee'
+}
 
 const siderStyle: CSSProperties = {
   position: 'relative',
@@ -125,9 +125,7 @@ const handleClick=()=>{
 
 <style scoped>
 .main {
-  /* min-height:100%;在电脑屏幕稍大的地方显示有滑动条 */
   max-height: 100%;
-  
 }
 
 .login-out {
@@ -137,7 +135,6 @@ const handleClick=()=>{
   right: 5px;
   margin: 0 auto;
 }
-
 .content-wrapper {
   height: 100%; /* 使内容区域撑满父元素 */
 }

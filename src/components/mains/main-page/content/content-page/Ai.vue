@@ -13,10 +13,14 @@
             </div>
             <div class="custom-tooltip-button">
               <VoiceButton :content="tooltip.content"/>
+              <AmendButton :content="tooltip.content"/>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="intention">
+      <Button v-for="(buttonText, index) in buttons" :key="index">{{ buttonText }}</Button>
     </div>
   </div>
   </template>
@@ -24,9 +28,11 @@
   import {ref, onMounted, watch, defineComponent, onUpdated} from 'vue';
   import {Avatar as AAvatar, Popconfirm as APopconfirm} from 'ant-design-vue';
   import { CaretRightOutlined } from '@ant-design/icons'
+  import { Button } from 'ant-design-vue'
   import VoiceButton from '../content-page/VoiceButton.vue';
+  import AmendButton from '../content-page/AmendButton.vue';
   import Time from '../content-page/Time.vue'
-  
+  const buttons = ref<string[]>(['意图1', '意图2', '意图3', '意图4', '意图5']);
   interface TooltipData {
     height: string;
     overflow: string;
@@ -57,6 +63,13 @@
   );
   </script>
   <style scoped>
+  .intention{
+    width: 100%;
+    margin:10px 120px auto;
+    font-size: 16px;
+    color: #56684f;
+    padding:5px
+  }
   .left .ai {
     background: #c84732;
     background-size: cover;
