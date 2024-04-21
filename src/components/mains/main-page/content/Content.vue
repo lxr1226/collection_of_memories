@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, defineExpose, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import AI from '../content/content-page/Ai.vue'
 import User from '../content/content-page/User.vue'
 
@@ -43,6 +43,7 @@ watch(
 const aiContents = ref<string[]>(['你好，我是您的回忆录助手，有什么我可以帮忙的吗？']);
 const userContents = ref<string[]>([]);
 
+
 // 将 AI 对话框内容和用户对话框内容交错合并
 const combinedContents = ref<string[]>([]);
 
@@ -61,7 +62,7 @@ for (let i = 0; i < maxLength; i++) {
       combinedContents.value.push(userContents.value[i]);
     }
   }
-    Play(aiContents.value[i]); // 调用 Play 函数播放内容
+  Play(aiContents.value[i]); // 调用 Play 函数播放内容
 }
 // 上一个对话框的类型，默认为用户对话框
 let lastDialogType: string | null = 'AI';
@@ -111,28 +112,29 @@ async function Play(newValue:string) {
     //console.log(token)
     const apiUrl = `http://47.108.144.113:8906/synthesizes?text=${encodeURIComponent(newValue)}`
     if (token) {
-    const response = await fetch(apiUrl, {
-      headers: {
-        'token': token // 将请求头内容传递给后端
+      const response = await fetch(apiUrl, {
+        headers: {
+          'token': token // 将请求头内容传递给后端
+        }
+      })
+      // console.log(response.ok)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch synthesized audio. Status: ${response.status}`)
       }
-    })
-     // console.log(response.ok) 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch synthesized audio. Status: ${response.status}`)
-    }
-    const blob = await response.blob()
-    const blobUrl = URL.createObjectURL(blob)
+      const blob = await response.blob()
+      const blobUrl = URL.createObjectURL(blob)
 
-    // 将 Audio 实例赋值给全局变量 audio
-    audio = new Audio(blobUrl)
-    audio.play()
-  } 
+      // 将 Audio 实例赋值给全局变量 audio
+      audio = new Audio(blobUrl)
+      audio.play()
+    }
   }catch (error) {
     // console.error('Error fetching and playing synthesized audio:', error)
   }
 }
 
-// 暴露给父组件的方法 
+
+// 暴露给父组件的方法
 defineExpose({ addDialog })
 </script>
 
