@@ -11,8 +11,10 @@ declare module 'vue' {
     AButton: typeof import('ant-design-vue/es')['Button']
     ACard: typeof import('ant-design-vue/es')['Card']
     ACol: typeof import('ant-design-vue/es')['Col']
+
     ACollapse: typeof import('ant-design-vue/es')['Collapse']
     ACollapsePanel: typeof import('ant-design-vue/es')['CollapsePanel']
+
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
     ADivider: typeof import('ant-design-vue/es')['Divider']
@@ -27,6 +29,9 @@ declare module 'vue' {
     ALayoutFooter: typeof import('ant-design-vue/es')['LayoutFooter']
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AmendButton: typeof import('./src/components/mains/main-page/content/content-page/AmendButton.vue')['default']
+
+    AModal: typeof import('ant-design-vue/es')['Modal']
+
     ARow: typeof import('ant-design-vue/es')['Row']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
@@ -36,9 +41,15 @@ declare module 'vue' {
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
     Content: typeof import('./src/components/mains/main-page/content/Content.vue')['default']
     Intention: typeof import('./src/components/mains/main-page/content/content-page/Intention.vue')['default']
+
     MultilevelHeading: typeof import('./src/components/mains/main-page/content/content-page/MultilevelHeading.vue')['default']
+
+    PersonalFrom: typeof import('./src/components/mains/main-page/Personal/personalFrom.vue')['default']
+
     PersonalInfor: typeof import('./src/components/mains/main-page/content/content-page/PersonalInfor.vue')['default']
     PersonalInformation: typeof import('./src/components/mains/main-page/PersonalInformation.vue')['default']
+    PersonalYitu: typeof import('./src/components/mains/main-page/Personal/personalYitu.vue')['default']
+    RichText: typeof import('./src/components/mains/main-page/content/content-page/RichText.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SiderLogo: typeof import('./src/components/mains/main-page/SiderLogo.vue')['default']

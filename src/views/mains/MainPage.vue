@@ -17,8 +17,10 @@
         <div style="padding:0 50px">
           <AI :newContent="contents" v-if="isAIVisible" style="margin: 50px;"></AI>
         </div>
-        
+
         <Content ref="contentRef" :receivedData="receivedData" :isAI="isAI"></Content>
+        <personalFrom v-model="fieldData.addVisible"></personalFrom>
+        <personalYitu v-model="yituData.addVisible"></personalYitu>
       </a-layout-content>
       <a-layout-footer :style="footerStyle">
         <VoiceInput
@@ -58,11 +60,22 @@
 import type { CSSProperties } from 'vue'
 import VoiceInput from '@/components/mains/main-page/footer/VoiceInput.vue'
 import AI from '@/components/mains/main-page/content/content-page/Ai.vue'
+
 import { ref } from 'vue'
 import Content from '../../components/mains/main-page/content/Content.vue'
 import axios from 'axios'
 import MultilevelHeading from '../../components/mains/main-page/content/content-page/MultilevelHeading.vue'
 // import VoiceInput from '../../components/footer/VoiceInput.vue';
+
+
+import {onMounted, ref} from 'vue'
+import Content from '../../components/mains/main-page/content/Content.vue'
+import {ZHQgetgrade, ZHQgetSelextid} from "@/services/content";
+import personalFrom from '../../components/mains/main-page/Personal/personalFrom.vue'
+import personalYitu from '../../components/mains/main-page/Personal/personalYitu.vue'
+
+
+
 const isAIVisible=ref(false)
 const contents ='请说出您的写作意图'
 const contentStyle: CSSProperties = {
@@ -121,6 +134,7 @@ const handleClick=()=>{
   isAIVisible.value = !isAIVisible.value
 }
 
+
 //点击标题生成的ai问题对话框
 const token = localStorage.getItem('token');
 let id = "3"
@@ -164,6 +178,49 @@ const welcome = function() {
     });
 }; 
 welcome();
+
+const getgrade = async (grade:string) => {
+  const res = await ZHQgetgrade(grade)
+  const id = localStorage.getItem('AcountID');//用户id
+  // 问题id
+  const ids = res.data.map((item: { id: string }) => item.id);
+  console.log(ids)// 获取 res.data.id
+  localStorage.setItem('QuestionID', ids)
+  if (id) {
+    const res = await ZHQgetgrade(grade);
+    await getSelextid(id);
+  } else {
+    console.error('用户 ID 未找到或为空');
+  }
+}
+const fieldData = ref({
+  addVisible: false,
+});//控制显示文本框
+const yituData = ref({
+  addVisible: false,
+});//控制显示文本框
+const getSelextid = async (id:string) => {
+  const res = await ZHQgetSelextid(id)
+  console.log(res.data)
+  if (res.data === 0) {
+    // 如果 res.data 等于 0，则弹出 RichText 组件
+    fieldData.value.addVisible = true;
+    console.log('无基本信息无意图');
+  } else if (res.data === 1) {
+    yituData.value.addVisible = true;
+    console.log('有基本信息无意图');
+  } else if (res.data === 2) {
+    console.log('有基本信息有意图');
+  } else {
+    console.log('其他情况');
+  }
+}
+
+// 调用接口
+onMounted(() => {
+  getgrade('2')
+});
+
 </script>
 
 <style scoped>

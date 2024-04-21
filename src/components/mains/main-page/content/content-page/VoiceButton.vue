@@ -10,7 +10,7 @@
       >
     </Button>
   </div>
-  
+
 </template>
 
 <script setup lang="ts">
@@ -18,8 +18,6 @@ import { ref, onMounted } from 'vue'
 import { Button } from 'ant-design-vue'
 import { h } from 'vue';
 import { CaretRightOutlined ,PauseOutlined} from '@ant-design/icons-vue'
-import { defineProps } from 'vue'
-const textToSynthesize = ref('')
 const player = ref<HTMLAudioElement | null>(null)
 const props = defineProps({
   content: String // 声明一个名为 content 的 prop，类型为字符串
@@ -77,7 +75,7 @@ async function synthesizeAndPlay(buttonId: { active: boolean; id: number }) {
         'token': token // 将请求头内容传递给后端
       }
     })
-     // console.log(response.ok) 
+     // console.log(response.ok)
     if (!response.ok) {
       throw new Error(`Failed to fetch synthesized audio. Status: ${response.status}`)
     }
@@ -92,7 +90,7 @@ async function synthesizeAndPlay(buttonId: { active: boolean; id: number }) {
       // 在音频播放结束后，切换按钮样式
       button.active = !button.active
     })
-  } 
+  }
   }catch (error) {
     console.error('Error fetching and playing synthesized audio:', error)
   }

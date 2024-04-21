@@ -12,7 +12,7 @@
       <!-- 显示声音波形的组件（VoiceWave） -->
       <VoiceWave v-show="hasAudioInput" :show="true" />
       <!-- 根据是否有音频输入显示不同提示 -->
-      <p v-if="hasAudioInput" style="color: #4caf50;text-align: center">上滑取消发送</p>
+      <p v-if="hasAudioInput" style="color: #4caf50;text-align: center">松开发送</p>
       <p v-else style="color: #c84732; font-size: 20px">请说话</p>
       <p v-if="canceling" ></p>
     </div>
@@ -26,6 +26,10 @@ import VoiceWave from './VoiceWave.vue'
 import Recorder from 'recorder-core'
 import 'recorder-core/src/engine/wav.js'
 import axios from 'axios';
+
+import {ZHQstoragesystem} from "@/services/content";
+
+
 const emit = defineEmits(['dataReceived']);
 const hasAudioInput = ref(true);//是否显示动画
 const cancel = ref(false); // 上滑并松手，确定取消录音
@@ -107,25 +111,40 @@ const sendDataToBackend = (wavBlob:Blob) => {
 };
 let dataBuffer: string[] = [];
 
- const sendMessage = (text:string) => {
+const sendMessage = (text: string) => {
   if (text) {
     // 发送消息给后端
     const eventSource = new EventSource(`http://47.108.144.113:7159/events/streamAsk?q=${encodeURIComponent(text)}`);
     eventSource.onmessage = (event) => {
       const botResponse = event.data;
+      console.log(botResponse)
       //sendDataToParent(botResponse)
       dataBuffer.push(botResponse);
-      sendDataToParent(dataBuffer.join(''),true);
+      sendDataToParent(dataBuffer.join(''), true);
+      botResponses = botResponse; // 更新 botResponses
+      Storagesystem(); // 调用 Storagesystem 函数
     };
     eventSource.onerror = () => {
       stopListening(eventSource);
     };
   }
-};  
+  let botResponses: string = ''; // 定义在外部函数作用域中
+
+  const Storagesystem = async () => {
+    const AccountId = localStorage.getItem('AcountID');
+    const requestData = {
+      replied: botResponses,
+      question_id: 2,
+      user_id: AccountId
+    }
+    const response = await ZHQstoragesystem(requestData)
+    console.log(response)
+  }
+};
 const stopListening = (eventSource: EventSource) => {
   if (eventSource) {
     eventSource.close();
-    
+
     dataBuffer = [];
   }
 };
