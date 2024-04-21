@@ -18,3 +18,23 @@ export function ZHQgetSelextid(id: string) {
         url: `/Selextid?id=${id}`,
     })
 }
+export function ZHQRevise(requestData:{ replied: string, questionId:string, userId:string }) {
+    const token = localStorage.getItem('token');
+    return lsjRequest.post({
+        headers: {
+            'token': token // 将请求头内容传递给后端
+        },
+        url: `/revise`,
+        data:requestData
+    })
+}
+export function ZHQstoragesystem(requestData:{ replied: string, user_id:string, question_id:number }) {
+    const token = localStorage.getItem('token');
+    return lsjRequest.post({
+        headers: {
+            'token': token // 将请求头内容传递给后端
+        },
+        url: `/storagesystem`,
+        data:requestData
+    })
+}

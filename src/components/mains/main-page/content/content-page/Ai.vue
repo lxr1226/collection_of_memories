@@ -13,7 +13,8 @@
             </div>
             <div class="custom-tooltip-button">
               <VoiceButton :content="tooltip.content"/>
-              <AmendButton :content="tooltip.content"/>
+              <AmendButton :content="tooltip.content" @click="showEdit"/>
+              <RichText v-model="fieldData.addVisible" :newContent="tooltip.content"></RichText>
             </div>
           </div>
         </div>
@@ -30,6 +31,7 @@
   import {Avatar as AAvatar, Popconfirm as APopconfirm} from 'ant-design-vue';
   import { CaretRightOutlined } from '@ant-design/icons'
   import { Button } from 'ant-design-vue'
+  import RichText from '@/components/mains/main-page/content/content-page/RichText.vue'
   import VoiceButton from '../content-page/VoiceButton.vue';
   import AmendButton from '../content-page/AmendButton.vue';
   import Intention from './Intention.vue';
@@ -43,7 +45,13 @@
   const props = defineProps<{
     newContent: string;
   }>();
-  
+  const fieldData = ref({
+  addVisible: false,
+});//控制显示文本框
+
+const showEdit = () => {
+  fieldData.value.addVisible= true;
+};
   const leftTooltips = ref<TooltipData[]>([
     {
       height: '170px',
@@ -65,7 +73,7 @@
   );
   </script>
   <style scoped>
-  .intention{
+.intention{
     width: 100%;
     margin:10px 120px auto;
     font-size: 16px;

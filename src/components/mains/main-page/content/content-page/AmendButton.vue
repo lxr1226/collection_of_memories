@@ -30,12 +30,12 @@
     {
       id: 1,
       styles: {
-        bgplay: '#56684f',
+        bgplay: '#c84732',
         bgpause: '#c84732',
       },
       icons: {
-        play: h(FormOutlined), // 播放图标
-        pause: h(CloseOutlined) // 暂停图标
+        play: h(FormOutlined), 
+        pause: h(FormOutlined) 
       },
       active: false // 初始状态为非激活状态
     }
