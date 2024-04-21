@@ -111,6 +111,7 @@ async function logIn() {
   // console.log(loginResult)
   if (loginResult.code == 200) {
     console.log(loginResult.data.token)
+    console.log(loginResult.data.id)
     localStorage.setItem('AcountID', loginResult.data.id)
     localStorage.setItem('token', loginResult.data.token)
     router.push('/MainPage')

@@ -26,8 +26,6 @@ import VoiceWave from './VoiceWave.vue'
 import Recorder from 'recorder-core'
 import 'recorder-core/src/engine/wav.js'
 import axios from 'axios';
-
-
 const emit = defineEmits(['dataReceived']);
 const hasAudioInput = ref(true);//是否显示动画
 const cancel = ref(false); // 上滑并松手，确定取消录音

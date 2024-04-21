@@ -9,7 +9,7 @@
   <a-card hoverable style="margin: 10vh 10px">
     <template #actions>
       <setting-outlined key="setting" />
-      <edit-outlined key="edit" />
+      <PersonalInfor key="edit" />
     </template>
     <a-avatar>
       <template #icon><UserOutlined /></template>
@@ -25,6 +25,9 @@
 
 <script setup lang="ts">
 import { SettingOutlined, EditOutlined, UserOutlined } from '@ant-design/icons-vue'
+import PersonalInfor from '../../mains/main-page/content/content-page/PersonalInfor.vue'
+import { Button } from 'ant-design-vue'
+import { h } from 'vue';
 </script>
 
 <style scoped>

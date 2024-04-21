@@ -59,7 +59,7 @@ const toggleButtonStyle = (button: { active: boolean; id: number }) => {
 }
 // 定义全局变量 audio
 let audio: any
-
+//文字转语音
 async function synthesizeAndPlay(buttonId: { active: boolean; id: number }) {
   const button = buttonId
   if (!props.content) {

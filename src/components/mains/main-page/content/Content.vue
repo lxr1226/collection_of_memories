@@ -6,7 +6,7 @@
           <AI :newContent="content" />
         </div>
         <div v-else>
-          <User :newContent="content" />
+          <User :newContent="content"/>
         </div>
       </div>
     </div>
@@ -17,7 +17,7 @@
 import { ref, onMounted, defineProps, defineExpose, watch } from 'vue'
 import AI from '../content/content-page/Ai.vue'
 import User from '../content/content-page/User.vue'
-
+import axios from 'axios';
 // 使用 defineProps 定义 props，接收从父组件传递过来的数据
 const props = defineProps({
   receivedData: {
@@ -28,7 +28,6 @@ const props = defineProps({
     type: Boolean
   }
 })
-
 // 监听 props 中的 receivedData 和 isAI 的变化，以便更新对话内容
 watch(
   () => props.receivedData,
@@ -36,18 +35,17 @@ watch(
     //console.log('newValue:', newValue, 'oldValue:', oldValue)
     addDialog(newValue, props.isAI)
     //console.log(props.isAI)
+
   }
 )
 
 // 存储 AI 对话框和user对话框的内容数组
-const aiContents = ref<string[]>(['你好，我是您的回忆录助手，有什么我可以帮忙的吗？']);
+const aiContents = ref<string[]>(['蒋雯绘是最漂亮的女孩']);
 const userContents = ref<string[]>([]);
 
 // 将 AI 对话框内容和用户对话框内容交错合并
 const combinedContents = ref<string[]>([]);
-
 const maxLength = Math.max(aiContents.value.length, userContents.value.length);
-
 for (let i = 0; i < maxLength; i++) {
   console.log(aiContents.value[i])
   if (i % 2 === 0) {
@@ -61,18 +59,18 @@ for (let i = 0; i < maxLength; i++) {
       combinedContents.value.push(userContents.value[i]);
     }
   }
-    Play(aiContents.value[i]); // 调用 Play 函数播放内容
 }
 // 上一个对话框的类型，默认为用户对话框
 let lastDialogType: string | null = 'AI';
 // 添加对话框
 function addDialog(newValue:string,isAI:boolean) {
   const currentDialogType = isAI ? 'AI' : 'User';
-
   if (currentDialogType === lastDialogType) {
     // 如果当前对话框类型与上一个对话框类型相同，则将新内容追加到上一个对话框中
     if (currentDialogType === 'AI') {
       aiContents.value[aiContents.value.length - 1] =  newValue;
+      
+      Play(newValue); // 播放内容
     } else {
       userContents.value[userContents.value.length - 1] = newValue;
     }
@@ -84,23 +82,29 @@ function addDialog(newValue:string,isAI:boolean) {
     } else {
       userContents.value.push(newValue);
       lastDialogType = 'User';
+      Play(aicountentnew); // 播放内容
     }
   }
   updateCombinedContents();
 }
+let aicountentnew=aiContents.value[aiContents.value.length-1]
+console.log(aicountentnew)
 
+//更新对话框
 function updateCombinedContents() {
   combinedContents.value = [];
   for (let i = 0; i < Math.max(aiContents.value.length, userContents.value.length); i++) {
     if (aiContents.value[i]) combinedContents.value.push(aiContents.value[i]);
     if (userContents.value[i]) combinedContents.value.push(userContents.value[i]);
+    aicountentnew=aiContents.value[i]
   }
-}
 
+}
 
 
 // 定义全局变量 audio
 let audio: any
+//文字转语音
 async function Play(newValue:string) {
   if (!newValue) {
     alert('Please enter some text to synthesize.')
@@ -113,7 +117,7 @@ async function Play(newValue:string) {
     if (token) {
     const response = await fetch(apiUrl, {
       headers: {
-        'token': token // 将请求头内容传递给后端
+        'token': token 
       }
     })
      // console.log(response.ok) 

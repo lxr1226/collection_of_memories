@@ -36,16 +36,21 @@
       </a-card>
       <a-card size="small" title="写作类型" style="margin: 10px">
         <p style="margin: 10px">
-          <a-button type="dashed" block>叙事型</a-button>
+          <a-button type="dashed" block @click="askQuestion">叙事型</a-button>
         </p>
         <p style="margin: 10px">
-          <a-button type="dashed" block>散文型</a-button>
+          <a-button type="dashed" block @click="welcome">散文型</a-button>
         </p>
         <p style="margin: 10px">
           <a-button type="dashed" block>抒情型</a-button>
         </p>
-      </a-card></a-layout-sider
-    >
+      </a-card>
+      <MultilevelHeading
+      @dataReceived="handleDataFromChild"
+      :onRecordingStopped="handleAddUserDialog"
+      :dataToSend="dataFromParent"
+      />
+      </a-layout-sider>
   </a-layout>
 </template>
 
@@ -53,9 +58,10 @@
 import type { CSSProperties } from 'vue'
 import VoiceInput from '@/components/mains/main-page/footer/VoiceInput.vue'
 import AI from '@/components/mains/main-page/content/content-page/Ai.vue'
-
 import { ref } from 'vue'
 import Content from '../../components/mains/main-page/content/Content.vue'
+import axios from 'axios'
+import MultilevelHeading from '../../components/mains/main-page/content/content-page/MultilevelHeading.vue'
 // import VoiceInput from '../../components/footer/VoiceInput.vue';
 const isAIVisible=ref(false)
 const contents ='请说出您的写作意图'
@@ -87,6 +93,7 @@ const dataFromParent = ref<string>('')
 const receivedData = ref<string>('')
 const isAI = ref<boolean>(true)
 const contentRef = ref<InstanceType<typeof Content>>()
+//添加对话框
 const handleAddUserDialog = () => {
   if (contentRef.value) {
     console.log('isAI.value:', isAI.value) // 打印 isAI 的值
@@ -113,6 +120,50 @@ const handleDataFromChild = (data: string, isAIValue: boolean) => {
 const handleClick=()=>{
   isAIVisible.value = !isAIVisible.value
 }
+
+//点击标题生成的ai问题对话框
+const token = localStorage.getItem('token');
+let id = "3"
+const askQuestion = () => {
+    axios.get('http://47.108.144.113:8906/inquire', {
+      headers: {
+        'token': token 
+      },
+      params: {
+      id: id 
+    }
+    })
+    .then(response => {
+      console.log(response.data.data);
+      receivedData.value=response.data.data;
+      
+    })
+    .catch((error) => {
+      console.error('发送数据到后端失败:', error);
+    });
+}; 
+//欢迎词和小标题
+// const token = localStorage.getItem('token');
+let grade = "0"
+const welcome = function() {
+    axios.get('http://47.108.144.113:8906/grade', {
+      headers: {
+        'token': token 
+      },
+      params: {
+        grade: grade 
+    }
+    })
+    .then(response => {
+      console.log(response.data.data[0].issue);
+      receivedData.value=response.data.data[0].issue;
+      
+    })
+    .catch((error) => {
+      console.error('发送数据到后端失败:', error);
+    });
+}; 
+welcome();
 </script>
 
 <style scoped>
