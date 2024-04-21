@@ -23,12 +23,26 @@ const lsjRequest = new LSJRequest({
       const token = localStorage.getItem('token');
       if (config.headers && token) {
         // 类型缩小
-        config.headers.Authorization = 'Bearer ' + token;
+        config.headers.token = token;
       }
       return config;
     }
   }
 });
-
+export const lxrRequest = new LSJRequest({
+  baseURL: 'http://47.108.144.113:5145',
+  timeout: TIME_OUT,
+  interceptors: {
+    requestSuccessFn: (config) => {
+      // 每一个请求都自动携带token
+      const token = localStorage.getItem('token');
+      if (config.headers && token) {
+        // 类型缩小
+        config.headers.token = token;
+      }
+      return config;
+    }
+  }
+});
 /* 将创建的请求实例 lsjRequest 导出，以便在其他文件中使用。 */
 export default lsjRequest;

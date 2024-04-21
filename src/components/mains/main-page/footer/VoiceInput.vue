@@ -20,12 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {ref,defineProps} from 'vue';
 import type { Ref } from 'vue';
 import VoiceWave from './VoiceWave.vue'
 import Recorder from 'recorder-core'
 import 'recorder-core/src/engine/wav.js'
 import axios from 'axios';
+import {LXRStorageUserRequest} from '@/services/mains/storageuser'
 
 
 const emit = defineEmits(['dataReceived']);
@@ -86,15 +87,27 @@ const config = {
     'token':token
   }
 }
+const props = defineProps({
+  parentMessage:{
+    type:Number,
+    default:undefined
+  } 
+});
 // 封装发送Base64编码的录音数据到后端的方法
 const sendDataToBackend = (wavBlob:Blob) => {
   axios.post('http://47.108.144.113:8906/transcribeAudios', wavBlob, config)
-    .then((response) => {
+    .then(async (response) => {
       console.log(response.data.data.body)
       if (response.data.data.body) {
         const responseData = response.data.data.body.replace(/^\[|]$/g, '');
+        console.log(responseData);
+        
         sendDataToParent(responseData,false);
         sendMessage(responseData);
+        const AcountID = localStorage.getItem('AcountID');
+        console.log(typeof(props.parentMessage));
+        
+        const strorageUserRequest = await LXRStorageUserRequest(responseData,props.parentMessage,AcountID);
         // const formData = new FormData();
         // formData.append('title', response.data);
         // axios.post('http://47.108.144.113:8090/v1/Moxin', formData).then((res) => {

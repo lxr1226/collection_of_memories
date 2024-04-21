@@ -20,7 +20,8 @@
       </div>
     </div>
     <div class="intention">
-      <Button v-for="(buttonText, index) in buttons" :key="index">{{ buttonText }}</Button>
+      <Intention></Intention>
+      <!-- <Button v-for="(buttonText, index) in buttons" :key="index">{{ buttonText }}</Button> -->
     </div>
   </div>
   </template>
@@ -31,8 +32,9 @@
   import { Button } from 'ant-design-vue'
   import VoiceButton from '../content-page/VoiceButton.vue';
   import AmendButton from '../content-page/AmendButton.vue';
+  import Intention from './Intention.vue';
   import Time from '../content-page/Time.vue'
-  const buttons = ref<string[]>(['意图1', '意图2', '意图3', '意图4', '意图5']);
+  // const buttons = ref<string[]>(['意图1', '意图2', '意图3', '意图4', '意图5']);
   interface TooltipData {
     height: string;
     overflow: string;

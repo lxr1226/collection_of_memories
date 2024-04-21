@@ -65,6 +65,9 @@ class LSJRequest {
   post<T = any>(config: LSJRequestConfig<T>) {
     return this.request({...config, method: 'POST'});
   }
+  fetch<T = any>(config: LSJRequestConfig<T>) {
+    return this.request({...config, method: 'FETCH'});
+  }
 }
 
 export default LSJRequest;
