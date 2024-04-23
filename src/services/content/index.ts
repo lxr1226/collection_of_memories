@@ -18,7 +18,7 @@ export function ZHQgetSelextid(id: string) {
         url: `/Selextid?id=${id}`,
     })
 }
-export function ZHQRevise(requestData:{ replied: string, questionId:string, userId:string }) {
+export function ZHQRevise(requestData:{ replied: string, questionId:number, userId:string }) {
     const token = localStorage.getItem('token');
     return lsjRequest.post({
         headers: {

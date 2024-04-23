@@ -28,9 +28,9 @@ const hideModal = async () => {
   const QuestionId = localStorage.getItem('ID');
   const AccountId = localStorage.getItem('AcountID');
   const requestData = {
-    replied: textContent.value,
+    replied: textContent.value!,
     questionId: 2,
-    userId: AccountId
+    userId: AccountId!
   }
   const response = await ZHQRevise(requestData)
   console.log(response)

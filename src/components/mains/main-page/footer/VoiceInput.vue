@@ -90,7 +90,6 @@ const config = {
 const props = defineProps({
   parentMessage:{
     type:Number,
-    default:undefined
   } 
 });
 // 封装发送Base64编码的录音数据到后端的方法
@@ -106,8 +105,10 @@ const sendDataToBackend = (wavBlob:Blob) => {
         sendMessage(responseData);
         const AcountID = localStorage.getItem('AcountID');
         console.log(typeof(props.parentMessage));
+        // if(!props.parentMessage){
+        //   const strorageUserRequest = await LXRStorageUserRequest(responseData,props.parentMessage,AcountID);
+        // }
         
-        const strorageUserRequest = await LXRStorageUserRequest(responseData,props.parentMessage,AcountID);
         // const formData = new FormData();
         // formData.append('title', response.data);
         // axios.post('http://47.108.144.113:8090/v1/Moxin', formData).then((res) => {
